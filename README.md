@@ -30,7 +30,7 @@ CREATE TABLE questions (
     id SERIAL PRIMARY KEY,
     question_text TEXT NOT NULL,
     question_answer TEXT NOT NULL,
-    difficulty difficulty_level NOT NULL DEFAULT 'MEDIUM'
+    difficulty difficulty_level VARCHAR
 );
 ```
 
@@ -49,11 +49,6 @@ CREATE TABLE question_tags (
     tag_id INT REFERENCES tags(id) ON DELETE CASCADE,
     PRIMARY KEY (question_id, tag_id)
 );
-```
-
-### Custom Enum Type
-```sql
-CREATE TYPE difficulty_level AS ENUM ('EASY', 'MEDIUM', 'HARD');
 ```
 
 ## Setup Instructions
