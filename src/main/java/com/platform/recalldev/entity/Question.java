@@ -1,20 +1,22 @@
 package com.platform.recalldev.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "questions")
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Question {
     
     @Id
@@ -28,20 +30,26 @@ public class Question {
     @NotBlank(message = "Question answer is required")
     @Column(name = "question_answer", nullable = false, columnDefinition = "TEXT")
     private String questionAnswer;
-    
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, columnDefinition = "difficulty_level")
     @Builder.Default
     private DifficultyLevel difficulty = DifficultyLevel.MEDIUM;
-    
-    @ManyToMany(mappedBy = "questions", fetch = FetchType.LAZY)
-    @Builder.Default
+
+    @ManyToMany
+    @JoinTable(
+            name = "question_tags",
+            joinColumns = @JoinColumn(name = "question_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    @JsonManagedReference
     private Set<Tag> tags = new HashSet<>();
-    
+
+
     public enum DifficultyLevel {
         EASY, MEDIUM, HARD
     }
-    
+
     // Helper methods
     public void addTag(Tag tag) {
         this.tags.add(tag);

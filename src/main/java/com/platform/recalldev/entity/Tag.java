@@ -1,20 +1,20 @@
 package com.platform.recalldev.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "tags")
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Tag {
     
     @Id
@@ -24,14 +24,9 @@ public class Tag {
     @NotBlank(message = "Tag name is required")
     @Column(nullable = false, unique = true, columnDefinition = "TEXT")
     private String name;
-    
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-        name = "question_tags",
-        joinColumns = @JoinColumn(name = "tag_id"),
-        inverseJoinColumns = @JoinColumn(name = "question_id")
-    )
-    @Builder.Default
+
+    @ManyToMany(mappedBy = "tags")
+    @JsonBackReference
     private Set<Question> questions = new HashSet<>();
     
     // Helper methods

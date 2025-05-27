@@ -55,6 +55,11 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>com.vladmihalcea</groupId>
+            <artifactId>hibernate-types-60</artifactId> <!-- or 52 for Hibernate 5.2 -->
+            <version>2.21.1</version>
+        </dependency>
     </dependencies>
 
     <build>
